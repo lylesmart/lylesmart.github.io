@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lyle Smart — Quality Engineering Director</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0e13;
+      --surface: #111620;
+      --border: #1e2535;
+      --accent: #00e5c0;
+      --accent2: #0057ff;
+      --text: #d8e0ee;
+      --muted: #6b7a99;
+      --heading: #f0f4ff;
+      --tag-bg: #14202e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Literata', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ─── GRID NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── AMBIENT GLOW ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80vw;
+      height: 60vh;
+      background: radial-gradient(ellipse, rgba(0,229,192,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      padding: 5rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3.5rem;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--heading);
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 span {
+      color: transparent;
+      -webkit-text-stroke: 1px var(--accent);
+    }
+
+    .tagline {
+      font-family: 'Literata', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin-bottom: 2rem;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .contact-row a {
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .contact-row a:hover { color: var(--accent); }
+
+    .contact-row .dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── SECTION ─── */
+    section {
+      margin-bottom: 4rem;
+      animation: fadeUp 0.7s ease both;
+    }
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.15s; }
+    section:nth-child(4) { animation-delay: 0.2s; }
+    section:nth-child(5) { animation-delay: 0.25s; }
+    section:nth-child(6) { animation-delay: 0.3s; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── SUMMARY ─── */
+    .summary-text {
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.8;
+      max-width: 780px;
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .job {
+      position: relative;
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      background: var(--surface);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .job:hover {
+      border-color: rgba(0,229,192,0.3);
+      box-shadow: 0 0 30px rgba(0,229,192,0.05);
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.3rem;
+    }
+
+    .job-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .job-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-top: 3px;
+    }
+
+    .job-company {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .job-blurb {
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .job ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .job ul li {
+      font-size: 0.92rem;
+      color: var(--text);
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    .job ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.7rem;
+      top: 0.3em;
+    }
+
+    /* ─── SKILLS GRID ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color 0.25s;
+    }
+    .skill-card:hover { border-color: rgba(0,229,192,0.25); }
+
+    .skill-cat {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-list {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ─── CERTS / EDU ─── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .cert-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .cert-org {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .cert-name {
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    /* ─── LINKS / ASSOCIATIONS ─── */
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: border-color 0.25s;
+    }
+    .link-item:hover { border-color: rgba(0,229,192,0.3); }
+
+    .link-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--heading);
+      min-width: 200px;
+    }
+    .link-item a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .link-item a:hover { text-decoration: underline; }
+
+    .link-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ─── ANIMATION ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.4rem; }
+      .job-header { flex-direction: column; gap: 0.3rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="eyebrow">Quality Engineering &amp; AI</div>
+    <h1>Lyle <span>Smart</span></h1>
+    <p class="tagline">Quality Engineering Director with 15+ years at the intersection of quality engineering and artificial intelligence.</p>
+    <div class="contact-row">
+      <span><span class="dot"></span>Evanston, IL, USA</span>
+      <a href="mailto:lylesmart@gmail.com"><span class="dot"></span>lylesmart@gmail.com</a>
+      <a href="https://www.linkedin.com/in/lylesmart/" target="_blank"><span class="dot"></span>linkedin.com/in/lylesmart</a>
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <section>
+    <div class="section-label">Summary</div>
+    <p class="summary-text">Pioneered LLM-assisted testing frameworks, Claude-powered test generation workflows, and AI-driven root cause analysis — now used daily by 40+ engineers. Proven track record of turning AI experimentation into measurable, org-wide results.</p>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <div class="section-label">Experience</div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Quality Engineering Director</div>
+        <div class="job-period">Feb 2025 – Present</div>
+      </div>
+      <div class="job-company">Continued · Remote</div>
+      <div class="job-blurb">World-class online learning provider serving thousands of customers and companies.</div>
+      <ul>
+        <li>Spearhead QA strategy across three platforms, aligning testing with business objectives and SOC 2 compliance.</li>
+        <li>Architect AI agent workflows using Claude Code to auto-generate Cypress tests from Figma and Jira specs — reducing test authoring time from days to hours.</li>
+        <li>Developed and maintain an AI Mastery program training 40+ engineers, achieving 100% adoption in 90 days.</li>
+        <li>Implement and refine Claude-assisted root cause analysis, reducing MTTR from hours to minutes.</li>
+        <li>Build and maintain Claude skills and slash commands for the QE team to generate tests and explore edge cases.</li>
+        <li>Manage a globally distributed team of 8 QEs across multiple time zones — zero voluntary departures.</li>
+        <li>Establish SOC 2-compliant testing frameworks using AI-powered tools (Cursor AI, Cypress AI Studio).</li>
+        <li>Drive continuous improvement via DORA metrics and CI/CD best practices, improving deployment success rates.</li>
+        <li>Represent Continued at industry events (StarEast) and professional boards (CQAA).</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Quality Engineering Manager</div>
+        <div class="job-period">May 2015 – Feb 2025</div>
+      </div>
+      <div class="job-company">Continued · Remote</div>
+      <ul>
+        <li>Built comprehensive QA processes from the ground up and managed testing for a new greenfield system.</li>
+        <li>Developed test automation frameworks (Cypress, Selenium, Robot Framework) and CI/CD pipelines, achieving 60%+ coverage.</li>
+        <li>Reduced Cypress end-to-end test runtime from 10 minutes per deploy to under 3 minutes.</li>
+        <li>Enhanced QA processes using AI tools (ChatGPT, GitHub Copilot, Perplexity) for test scenario generation and debugging.</li>
+        <li>Implemented API testing strategy using GraphQL and Apollo Studio for a new platform.</li>
+        <li>Led security, accessibility, and load testing initiatives, improving compliance with OWASP and accessibility standards.</li>
+        <li>Resolved 1,000+ issues before client release across unit, functional, CI, regression, UAT, and production verification.</li>
+        <li>Executed penetration tests including SQL/HTML injections and XSS vulnerability exploration.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Senior QA Engineer → QA Engineer</div>
+        <div class="job-period">Mar 2013 – May 2015</div>
+      </div>
+      <div class="job-company">Aon Hewitt · Remote &amp; Evanston, IL</div>
+      <div class="job-blurb">Benefits consulting firm providing administration to Fortune 500 companies.</div>
+      <ul>
+        <li>Led and executed unit, functional, white-box, black-box, CI, and regression test strategies across multiple enterprise software projects in an Agile environment.</li>
+        <li>Caught 200+ issues before client release and managed migration requests throughout the development lifecycle.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section>
+    <div class="section-label">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-cat">AI</div>
+        <div class="skill-list">Claude Code, GitHub Copilot, Cursor, ChatGPT, Gemini</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Test Automation</div>
+        <div class="skill-list">Cypress, Playwright, Robot Framework, Cucumber, Selenium, TestComplete, Appium, BrowserStack, SauceLabs</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">API Testing</div>
+        <div class="skill-list">Postman, ReadyAPI, Insomnia, GraphQL, Bruno, Swagger</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Performance &amp; Load</div>
+        <div class="skill-list">LoadNinja, JMeter, Load Test View</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Database</div>
+        <div class="skill-list">SQL, MySQL, MongoDB, DataGrip, phpMyAdmin, Sequel Ace</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Cybersecurity</div>
+        <div class="skill-list">OWASP Zap, Burp Suite</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Accessibility</div>
+        <div class="skill-list">Wave, Axe</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Programming</div>
+        <div class="skill-list">JavaScript, Python, HTML, CSS, XML, jQuery</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Cloud &amp; DevOps</div>
+        <div class="skill-list">AWS, CloudWatch, CircleCI, Jenkins, Git, GitHub</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Methodologies</div>
+        <div class="skill-list">Scrum, Kanban, DORA Metrics, CI/CD, SOC 2</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION & CERTS -->
+  <section>
+    <div class="section-label">Education &amp; Certifications</div>
+    <div class="cert-grid">
+      <div class="cert-item">
+        <div class="cert-org">University of Bedfordshire</div>
+        <div class="cert-name">BSc Information Systems Development</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">Anthropic</div>
+        <div class="cert-name">Claude Code in Action &amp; Claude 101</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">ISTQB</div>
+        <div class="cert-name">Certified Test Automation Engineer</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">ISTQB</div>
+        <div class="cert-name">Certified Tester</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">Scrum.org</div>
+        <div class="cert-name">Professional Scrum Master</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">Northwestern University</div>
+        <div class="cert-name">Agile for Practitioners · Sprint Planning &amp; Estimation · Supporting an Agile Transformation</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">Primrose Consulting</div>
+        <div class="cert-name">High-Performing Teams Training for Leaders</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-org">Udemy</div>
+        <div class="cert-name">Web Development &amp; Design, Python, PHP, Cucumber</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSOCIATIONS & LINKS -->
+  <section>
+    <div class="section-label">Associations &amp; Publications</div>
+    <div class="links-list">
+      <div class="link-item">
+        <div>
+          <div class="link-label">Cypress Ambassador</div>
+          <div class="link-note">2024 – Present</div>
+        </div>
+        <a href="https://www.cypress.io/ambassadors" target="_blank">cypress.io/ambassadors</a>
+      </div>
+      <div class="link-item">
+        <div>
+          <div class="link-label">CQAA Director of Communication</div>
+          <div class="link-note">2024 – Present</div>
+        </div>
+        <a href="https://www.cqaa.org/about/board-directors" target="_blank">cqaa.org/about/board-directors</a>
+      </div>
+      <div class="link-item">
+        <div>
+          <div class="link-label">StarEast Conference</div>
+          <div class="link-note">Represented Continued · 2024–2026</div>
+        </div>
+      </div>
+      <div class="link-item">
+        <div>
+          <div class="link-label">Cypress Article</div>
+          <div class="link-note">Leading Quality Through Change</div>
+        </div>
+        <a href="https://dev.to/cypress/leading-quality-through-change-balancing-speed-ai-and-the-fundamentals-that-matter-oi7" target="_blank">dev.to/cypress/leading-quality-through-change…</a>
+      </div>
+      <div class="link-item">
+        <div>
+          <div class="link-label">Continued Blog</div>
+          <div class="link-note">Team Spotlight</div>
+        </div>
+        <a href="https://www.continued.com/blog/post/team-continued-lyle-smart" target="_blank">continued.com/blog/post/team-continued-lyle-smart</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
